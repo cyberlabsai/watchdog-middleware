@@ -83,41 +83,18 @@ def root():
 def termometer():
     global nsfw_model
     global sess
-    jsonObj = {
-            'id':'',
-            'base64':'',
-            'tweet':'',
-            'isImage':'',
-            'username':'',
-            'url':'',
-            'toxic':''
-    }
+   
     if request.method == 'GET':
         tweets = getTweets()
 
         response = []
+        ids=[]
         for tweet in tweets:
                 t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
 
                 if t.isImage:
                         print("img")
-                #         # index 0 is SFW
-                #         # index 1 is NSFW
-
-                # # img = decode_img_base64(image_str)
-                # # cv2.imwrite("img.jpg", img)
-
-                # fn_load_image = create_tensorflow_image_loader(self.sess)
-
-                # image = fn_load_image("img.jpg")
-
-                # predictions = self.sess.run(self.model.predictions,feed_dict={self.model.input: image})
-
-                #         if val[1] >=0.9:
-                #                 t.inappropriate = 1
-                #         else:
-                #                 t.inappropriate = 0
-
+              
                 else:
                         t.inappropriate = nlp.classify([t.tweetText])[0]
         
@@ -129,17 +106,18 @@ def termometer():
                         'username':'',
                         'url':'',
                         'toxic':''
-                        }
+                }
+                t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
                 jsonObj['id'] = t.id
                 jsonObj['base64'] = t.base64
                 jsonObj['tweet'] = t.tweetText
                 jsonObj['isImage'] = t.isImage
                 jsonObj['username'] = t.username
                 jsonObj['url'] = t.url
-                jsonObj['toxic'] = str(t.inappropriate)
+                jsonObj['toxic'] = t.inappropriate
                 response.append(jsonObj)
-                # print(jsonObj)
-                updateTweetRead(t.id)
-        print(response)
-    return jsonify(response)
+                ids.append(str(t.id))
+        
+                updateTweetRead(ids)
+                return jsonify(response)
 
