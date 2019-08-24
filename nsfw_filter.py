@@ -8,13 +8,6 @@ from PIL import Image, ImageStat
 import base64
 import cv2
 
-def decode_img_base64(base64_string):
-    sbuf = BytesIO()
-    sbuf.write(base64.b64decode(base64_string))
-    pimg = Image.open(sbuf)
-    img = cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
-    return cv2.resize(img, (224,224))
-
 class nsfw:
 
     def __init__(self):
@@ -56,8 +49,8 @@ class nsfw:
         predictions = self.sess.run(self.model.predictions,feed_dict={self.model.input: image})
 
         # print("\tSFW score:\t{}\n\tNSFW score:\t{}".format(*predictions[0]))
-        self.sess.close()
+
         return predictions[0]
-        
-# wtf = nsfw()
-# print(wtf.classify("asd"))
+
+nsfw_model = nsfw()
+
