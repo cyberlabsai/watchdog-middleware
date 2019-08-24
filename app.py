@@ -21,6 +21,8 @@ def termometer():
     elif request.method == 'GET':
         '''retornar no intervalo de 175 todas as ocorrencias de hate e o tipo (img || txt)'''
 
+        # nsfw.classify("")
+
         return jsonify('nudity')
 
     

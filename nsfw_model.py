@@ -3,7 +3,17 @@ import numpy as np
 import os
 from model import OpenNsfwModel, InputType
 from image_utils import create_tensorflow_image_loader
+from io import BytesIO
+from PIL import Image, ImageStat
+import base64
+import cv2
 
+def decode_img_base64(base64_string):
+    sbuf = BytesIO()
+    sbuf.write(base64.b64decode(base64_string))
+    pimg = Image.open(sbuf)
+    img = cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
+    return cv2.resize(img, (224,224))
 
 class nsfw:
 
@@ -32,19 +42,19 @@ class nsfw:
         self.sess.run(tf.initialize_all_variables())
 
 
-    def classify(self, image):
+    def classify(self, image_str):
+
+        img = decode_img_base64(image_str)
+        cv2.imwrite("img.jpg", img)
 
         fn_load_image = create_tensorflow_image_loader(self.sess)
 
-        image = fn_load_image(image)
+        image = fn_load_image("img.jpg")
 
         predictions = self.sess.run(self.model.predictions,feed_dict={self.model.input: image})
 
+        # print("\tSFW score:\t{}\n\tNSFW score:\t{}".format(*predictions[0]))
+
         return predictions[0]
-
-        print("\tSFW score:\t{}\n\tNSFW score:\t{}".format(*predictions[0]))
-
         
-o = nsfw()
 
-o.classify("0XBTHxt.jpg")
