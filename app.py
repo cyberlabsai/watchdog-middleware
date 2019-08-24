@@ -1,11 +1,12 @@
 from flask import Flask, jsonify, request
+from db import updateTweetRead
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return ('Hello, World!')
 
-@app.route('/termometer', methods=[GET, POST])
+@app.route('/termometer', methods=['GET', 'POST'])
 def termometer():
     if request.method == 'POST':
         pass
