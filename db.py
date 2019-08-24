@@ -20,8 +20,10 @@ def connect():
 def updateTweetRead(tweetIds):
     conn = connect()
     cursor = conn.cursor()   
-    query =  "UPDATE tweets SET read = True where id in ({ids})".format(ids=', '.join(tweetIds))
+    query =  "UPDATE tweets SET read = true where id in ({ids})".format(ids=', '.join(tweetIds))
     cursor.execute(query)
+    conn.commit()
+    conn.close()
 
 def getTweets():
     conn = connect()
@@ -30,5 +32,6 @@ def getTweets():
     query = "SELECT id, tweet_text, image_status, image_base64, user_name, url FROM tweets  where read='False' order by created_at asc limit 175"
     cursor.execute(query)
     results = cursor.fetchall()
+    conn.close()
     return results
 
