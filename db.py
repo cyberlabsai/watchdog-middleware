@@ -17,10 +17,10 @@ def connect():
        )
     return conn_cl
 
-def updateTweetRead(tweetId):
+def updateTweetRead(tweetIds):
     conn = connect()
     cursor = conn.cursor()   
-    query =  "UPDATE tweets SET read = True where id = {id}".format(id=tweetId)
+    query =  "UPDATE tweets SET read = True where id in ({ids})".format(ids=', '.join(tweetIds))
     cursor.execute(query)
 
 def getTweets():

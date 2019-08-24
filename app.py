@@ -10,19 +10,20 @@ def root():
 
 @app.route('/termometer', methods=['GET'])
 def termometer():
-    jsonObj = {
-            'id':'',
-            'base64':'',
-            'tweet':'',
-            'isImage':'',
-            'username':'',
-            'url':'',
-            'toxic':''
-    }
     if request.method == 'GET':
         tweets = getTweets()
         response = []
+        ids=[]
         for tweet in tweets:
+                jsonObj = {
+                        'id':'',
+                        'base64':'',
+                        'tweet':'',
+                        'isImage':'',
+                        'username':'',
+                        'url':'',
+                        'toxic':''
+                }
                 t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
                 jsonObj['id'] = t.id
                 jsonObj['base64'] = t.base64
@@ -32,8 +33,11 @@ def termometer():
                 jsonObj['url'] = t.url
                 jsonObj['toxic'] = t.inappropriate
                 response.append(jsonObj)
-                updateTweetRead(t.id)
+                ids.append(str(t.id))
+        
+        updateTweetRead(ids)
         
     
     return jsonify(response)
+
 
