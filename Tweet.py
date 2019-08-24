@@ -1,4 +1,4 @@
-from nsfw_model import nsfw
+# from nsfw_model import nsfw
 from nlp import NLP
 import json
 
@@ -12,14 +12,15 @@ class Tweet():
         self.url = url
         self.inappropriate = inappropriate
 
-    def validate(self):
-        if self.isImage:
-            nsfw = nsfw()
-            self.inappropriate = nsfw.classify(self.base64)
-        else:
-            #train nlp ...
-            classifier = NLP()
-            self.inappropriate = classifier.classify([self.tweetText])[0]
+
+    # def validate(self):
+    #     if self.isImage:
+    #         # nsfw = nsfw()
+    #         self.inappropriate = nsfw.classify(self.base64)
+    #     else:
+    #         #train nlp ...
+    #         classifier = NLP()
+    #         self.inappropriate = classifier.classify([self.tweetText])[0]
         
 
     def show(self):

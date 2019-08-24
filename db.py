@@ -27,8 +27,9 @@ def getTweets():
     conn = connect()
     cursor = conn.cursor()
 
-    query = "SELECT id, tweet_text, image_status, image_base64, user_name, url FROM tweets  where read='False' order by created_at asc limit 175"
+    query = "SELECT id, tweet_text, image_status, image_base64, user_name, url FROM tweets  where read='False' order by created_at desc limit 15"
     cursor.execute(query)
     results = cursor.fetchall()
+    print(results)
     return results
 
