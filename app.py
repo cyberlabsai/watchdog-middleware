@@ -24,8 +24,8 @@ class NLP:
                 Lista numpy contendo 0 para se frase nao e ofensiva 1 se ela for
                 """
 
-                freq = vectorizer_loaded.transform(testes)
-                return classifier.predict(freq)
+                freq = self.vectorizer.transform(texts)
+                return self.classifier.predict(freq)
 
 app = Flask(__name__)
 
