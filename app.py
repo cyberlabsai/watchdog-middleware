@@ -1,6 +1,11 @@
 from flask import Flask, jsonify, request
 from db import updateTweetRead
+
+from nsfw_model import nsfw
+
 app = Flask(__name__)
+
+nsfw = nsfw()
 
 @app.route('/')
 def root():
@@ -15,6 +20,7 @@ def termometer():
 
     elif request.method == 'GET':
         '''retornar no intervalo de 175 todas as ocorrencias de hate e o tipo (img || txt)'''
+
         return jsonify('nudity')
 
     
