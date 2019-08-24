@@ -1,28 +1,26 @@
-from flask import Flask, jsonify, request
-from db import updateTweetRead
+from flask import Flask, jsonify, request, json
+from db import updateTweetRead, getTweets
+import Tweet
 
-from nsfw_model import nsfw
 
 app = Flask(__name__)
 
-nsfw = nsfw()
 
 @app.route('/')
 def root():
     return ('Cyberlabs supremo')
 
-@app.route('/termometer', methods=['GET', 'POST'])
+@app.route('/termometer', methods=['GET'])
 def termometer():
-    if request.method == 'POST':
-        data = request.json
-        print(data)
-        updateTweetRead(1)
-
-    elif request.method == 'GET':
-        '''retornar no intervalo de 175 todas as ocorrencias de hate e o tipo (img || txt)'''
+    '''retornar no intervalo de 175 todas as ocorrencias de hate e o tipo (img || txt)'''
+    if request.method == 'GET':
+        tweets = getTweets()
+        response = []
+        for tweet in tweets:
+            t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
+            response.append(json.dumps(t.__dict__))
         
-        # nsfw.classify("")
-
-        return jsonify('nudity')
+    
+    return jsonify(response)
 
     
