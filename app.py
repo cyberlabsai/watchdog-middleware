@@ -2,9 +2,7 @@ from flask import Flask, jsonify, request, json
 from db import updateTweetRead, getTweets
 import Tweet
 
-
 app = Flask(__name__)
-
 
 @app.route('/')
 def root():
@@ -12,15 +10,30 @@ def root():
 
 @app.route('/termometer', methods=['GET'])
 def termometer():
-    '''retornar no intervalo de 175 todas as ocorrencias de hate e o tipo (img || txt)'''
+    jsonObj = {
+            'id':'',
+            'base64':'',
+            'tweet':'',
+            'isImage':'',
+            'username':'',
+            'url':'',
+            'toxic':''
+    }
     if request.method == 'GET':
         tweets = getTweets()
         response = []
         for tweet in tweets:
-            t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
-            response.append(json.dumps(t.__dict__))
+                t = Tweet.Tweet(tweet[0],tweet[1],tweet[2],tweet[3],tweet[4],tweet[5])
+                jsonObj['id'] = t.id
+                jsonObj['base64'] = t.base64
+                jsonObj['tweet'] = t.tweetText
+                jsonObj['isImage'] = t.isImage
+                jsonObj['username'] = t.username
+                jsonObj['url'] = t.url
+                jsonObj['toxic'] = t.inappropriate
+                response.append(jsonObj)
+                updateTweetRead(t.id)
         
     
     return jsonify(response)
 
-    

@@ -20,11 +20,10 @@ def connect():
 def updateTweetRead(tweetId):
     conn = connect()
     cursor = conn.cursor()   
-    query =  "UPDATE tweets SET flag = (%s) where id = {tweetId}"
-    data = ('True')
-    cursor.execute(query, data)
+    query =  "UPDATE tweets SET read = True where id = {id}".format(id=tweetId)
+    cursor.execute(query)
 
-def getTweets(limit = 175):
+def getTweets():
     conn = connect()
     cursor = conn.cursor()
 
