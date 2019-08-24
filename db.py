@@ -20,9 +20,16 @@ def connect():
 def updateTweetRead(tweetId):
     conn = connect()
     cursor = conn.cursor()   
-
     query =  "UPDATE tweets SET flag = (%s) where id = {tweetId}"
     data = ('True')
-
     cursor.execute(query, data)
-    conn.commit()
+
+def getTweets(limit = 175):
+    conn = connect()
+    cursor = conn.cursor()
+
+    query = "SELECT id, tweet_text, image, image_url, user_name FROM tweets  where flag='False' order by created_at asc limit 175"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    return results
+
