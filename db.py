@@ -21,7 +21,7 @@ def updateTweetRead(tweetId):
     conn = connect()
     cursor = conn.cursor()   
 
-    query =  "UPDATE tweets SET [] VALUE (%s);"
+    query =  "UPDATE tweets SET flag = (%s) where id = {tweetId}"
     data = (True)
 
     cursor.execute(query, data)
